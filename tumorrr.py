@@ -1,4 +1,4 @@
-# Gerekli Kütüphaneleri İçeri Aktarma
+
 import os
 import cv2
 import numpy as np
@@ -8,37 +8,35 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
-# --- 1. Veri Yükleme ve Ön İşleme ---
 
-# Veri seti yolu ve kategoriler
+
 data_dir = '/kaggle/input/brain-mri-images-for-brain-tumor-detection'
-categories = ['no', 'yes']  # 'no' - Tümör Yok, 'yes' - Tümör Var
+categories = ['no', 'yes']  
 
-# Görüntü boyutlandırma
 img_size = 128
-data = []    # Görüntü verileri
-labels = []  # Görüntü etiketleri
+data = []    
+labels = []  
 
-# Görüntüleri yükle ve ön işle
+
 print("Veri yükleniyor...")
 for category in categories:
-    path = os.path.join(data_dir, category)  # Kategori klasör yolu
-    class_num = categories.index(category)   # Etiket: 0 (no) veya 1 (yes)
+    path = os.path.join(data_dir, category)  
+    class_num = categories.index(category)   
     
     for img in os.listdir(path):
         try:
-            # Görüntüyü gri tonlamaya çevir ve yeniden boyutlandır
+        
             img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
             resized_array = cv2.resize(img_array, (img_size, img_size))
             
-            # Veriyi listeye ekle
+          
             data.append(resized_array)
             labels.append(class_num)
         except Exception as e:
             print("Hata:", e)
 
 print("Veri yükleme tamamlandı.")
-data = np.array(data).reshape(-1, img_size, img_size, 1) / 255.0  # Normalizasyon
+data = np.array(data).reshape(-1, img_size, img_size, 1) / 255.0 
 labels = np.array(labels)
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, random_state=42)
 y_train = to_categorical(y_train, num_classes=2)
