@@ -7,7 +7,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
-# Veri yolu ve kategoriler
+
 data_dir = '/kaggle/input/brain-mri-images-for-brain-tumor-detection'
 categories = ['no', 'yes']
 img_size = 128
@@ -15,7 +15,7 @@ img_size = 128
 data = []
 labels = []
 
-# Veriyi yükleme
+
 print("Loading data...")
 for category in categories:
     path = os.path.join(data_dir, category)
@@ -31,18 +31,18 @@ for category in categories:
 
 print("Data loading completed.")
 
-# Veriyi normalize etme ve reshape
+
 data = np.array(data).reshape(-1, img_size, img_size, 1) / 255.0
 labels = np.array(labels)
 
-# Eğitim ve test verisine ayırma
+
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, random_state=42)
 
-# Kategorik dönüşüm
+
 y_train = to_categorical(y_train, num_classes=2)
 y_test = to_categorical(y_test, num_classes=2)
 
-# Model oluşturma
+
 model = Sequential([
     Conv2D(32, (3, 3), activation='relu', input_shape=(img_size, img_size, 1)),
     MaxPooling2D(pool_size=(2, 2)),
@@ -54,19 +54,19 @@ model = Sequential([
     Dense(2, activation='softmax')
 ])
 
-# Model derleme
+
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Modeli eğitme
+
 print("Model training...")
 history = model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test), verbose=1)
 print("Training completed.")
 
-# Modeli değerlendirme
+
 accuracy = model.evaluate(X_test, y_test, verbose=0)[1]
 print(f"Test Accuracy: {accuracy * 100:.2f}%")
 
-# Örnek tahminler
+
 sample_images = X_test[:4]
 sample_labels = y_test[:4]
 predictions = model.predict(sample_images)
@@ -83,7 +83,7 @@ for i in range(4):
 plt.tight_layout()
 plt.show()
 
-# Eğitim ve doğrulama doğruluk grafiği
+
 plt.figure(figsize=(8, 5))
 plt.plot(history.history['accuracy'], label='Training Accuracy')
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
