@@ -1,6 +1,6 @@
 # 🧠 Brain MRI Tumor Detection using Keras 🧠
 
-![Brain MRI](https://github.com/yourusername/brain-mri-tumor-detection/blob/main/images/brain_mri.jpg)
+
 
 ## Table of Contents
 - [🔍 Project Overview](#-project-overview)
